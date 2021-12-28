@@ -1,6 +1,7 @@
 package com.lucasg.cursomc.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Cliente {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
