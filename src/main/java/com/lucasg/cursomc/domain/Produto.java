@@ -1,5 +1,6 @@
 package com.lucasg.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Produto {
         this.preco = preco;
     }
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "ProdutoCategoria",
             joinColumns = @JoinColumn(name = "produto_id"),
