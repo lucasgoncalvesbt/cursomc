@@ -1,7 +1,11 @@
 package com.lucasg.cursomc.controllers;
 
 import com.lucasg.cursomc.domain.Categoria;
+import com.lucasg.cursomc.services.CategoriaServices;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,16 +13,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categorias")
+@RequiredArgsConstructor
 public class CategoriaController {
 
-    @GetMapping
-    public List<Categoria> listar() {
-        Categoria cat1 = new Categoria(1, "Informática");
-        Categoria cat2 = new Categoria(2, "Escritório");
+    private final CategoriaServices categoriaService;
 
-        List<Categoria> categorias = List.of(cat1, cat2);
+    @GetMapping("/{id}")
+    public ResponseEntity<Categoria> listar(@PathVariable Integer id) {
 
-        return categorias;
+        Categoria categoria = categoriaService.buscar(id);
+
+        return ResponseEntity.ok(categoria);
     }
 
 }
