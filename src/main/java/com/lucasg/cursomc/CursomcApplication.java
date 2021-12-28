@@ -1,13 +1,8 @@
 package com.lucasg.cursomc;
 
-import com.lucasg.cursomc.domain.Categoria;
-import com.lucasg.cursomc.domain.Cidade;
-import com.lucasg.cursomc.domain.Estado;
-import com.lucasg.cursomc.domain.Produto;
-import com.lucasg.cursomc.repositories.CategoriaRepository;
-import com.lucasg.cursomc.repositories.CidadeRepository;
-import com.lucasg.cursomc.repositories.EstadoRepository;
-import com.lucasg.cursomc.repositories.ProdutoRepository;
+import com.lucasg.cursomc.domain.*;
+import com.lucasg.cursomc.domain.enums.TipoCliente;
+import com.lucasg.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +19,8 @@ public class CursomcApplication implements CommandLineRunner {
     private final ProdutoRepository produtoRepository;
     private final CidadeRepository cidadeRepository;
     private final EstadoRepository estadoRepository;
+    private final ClienteRepository clienteRepository;
+    private final EnderecoRepository enderecoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CursomcApplication.class, args);
@@ -62,5 +59,17 @@ public class CursomcApplication implements CommandLineRunner {
 
         estadoRepository.saveAll(List.of(est1, est2));
         cidadeRepository.saveAll(List.of(c1, c2, c3));
+
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "12345678978", TipoCliente.PESSOA_FISICA);
+
+        cli1.getTelefones().addAll(List.of("27363323", "93838393"));
+
+        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+        cli1.getEnderecos().addAll(List.of(e1, e2));
+
+        clienteRepository.saveAll(List.of(cli1));
+        enderecoRepository.saveAll(List.of(e1, e2));
     }
 }
