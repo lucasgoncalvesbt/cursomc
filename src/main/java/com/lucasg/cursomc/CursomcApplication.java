@@ -1,6 +1,7 @@
 package com.lucasg.cursomc;
 
 import com.lucasg.cursomc.domain.*;
+import com.lucasg.cursomc.domain.enums.EstadoPagamento;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import com.lucasg.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -21,6 +23,8 @@ public class CursomcApplication implements CommandLineRunner {
     private final EstadoRepository estadoRepository;
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
+    private final PedidoRepository pedidoRepository;
+    private final PagamentoRepository pagamentoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CursomcApplication.class, args);
@@ -71,5 +75,21 @@ public class CursomcApplication implements CommandLineRunner {
 
         clienteRepository.saveAll(List.of(cli1));
         enderecoRepository.saveAll(List.of(e1, e2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Pedido ped1 = new Pedido(null, sdf.parse("27/12/2021 10:32"), cli1, e1);
+        Pedido ped2 = new Pedido(null, sdf.parse("10/12/2021 19:35"), cli1, e2);
+
+        Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+        ped1.setPagamento(pagto1);
+        Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/12/2021 00:00"), null);
+        ped2.setPagamento(pagto2);
+
+        cli1.getPedidos().addAll(List.of(ped1, ped2));
+
+        pedidoRepository.saveAll(List.of(ped1, ped2));
+        pagamentoRepository.saveAll(List.of(pagto1, pagto2));
+
     }
 }

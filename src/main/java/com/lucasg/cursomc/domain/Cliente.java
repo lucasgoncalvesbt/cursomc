@@ -35,6 +35,9 @@ public class Cliente {
     @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> telefones = new HashSet<>();
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
+
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
         this.id = id;
         this.nome = nome;
@@ -97,6 +100,14 @@ public class Cliente {
 
     public void setTelefones(Set<String> telefones) {
         this.telefones = telefones;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override
