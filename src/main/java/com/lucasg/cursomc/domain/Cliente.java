@@ -1,14 +1,10 @@
 package com.lucasg.cursomc.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +25,6 @@ public class Cliente {
     private String cpfOuCnpj;
     private Integer tipoCliente;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -37,7 +32,7 @@ public class Cliente {
     @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> telefones = new HashSet<>();
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
