@@ -1,6 +1,8 @@
 package com.lucasg.cursomc.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import lombok.AllArgsConstructor;
@@ -35,6 +37,7 @@ public class Cliente {
     @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> telefones = new HashSet<>();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

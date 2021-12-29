@@ -1,5 +1,6 @@
 package com.lucasg.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lucasg.cursomc.domain.enums.EstadoPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,9 @@ import java.util.Date;
 @Setter
 @Entity
 public class PagamentoComBoleto extends Pagamento{
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataVencimento;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataPagamento;
 
     public PagamentoComBoleto(Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Date dataVencimento, Date dataPagamento) {
