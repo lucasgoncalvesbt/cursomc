@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,6 +39,16 @@ public class Produto {
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
     )
     private List<Categoria> categorias = new ArrayList<>();
+
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itemsPedidos = new HashSet<>();
+
+    public List<Pedido> getPedidos() {
+        List<Pedido> lista = new ArrayList<>();
+        itemsPedidos.stream()
+                .forEach(itemPedido -> lista.add(itemPedido.getPedido()));
+        return lista;
+    }
 
     @Override
     public boolean equals(Object o) {
