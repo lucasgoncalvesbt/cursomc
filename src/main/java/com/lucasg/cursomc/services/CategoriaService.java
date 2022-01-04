@@ -2,8 +2,10 @@ package com.lucasg.cursomc.services;
 
 import com.lucasg.cursomc.domain.Categoria;
 import com.lucasg.cursomc.repositories.CategoriaRepository;
+import com.lucasg.cursomc.services.exceptions.DataIntegrityExeception;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,4 +29,13 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
+    public void delete(Integer id) {
+        find(id);
+
+        try {
+            categoriaRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityExeception("Não é possível excluir uma categoria que possui produtos");
+        }
+    }
 }

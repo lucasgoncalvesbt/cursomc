@@ -1,5 +1,6 @@
 package com.lucasg.cursomc.controllers.exceptions;
 
+import com.lucasg.cursomc.services.exceptions.DataIntegrityExeception;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,12 @@ public class ErrorHandler {
     public ResponseEntity<StandardError> objectNotFoundExeception(ObjectNotFoundExeception e, HttpServletRequest request) {
         StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(DataIntegrityExeception.class)
+    public ResponseEntity<StandardError> dataIntegrityExeceptionExeception(DataIntegrityExeception e, HttpServletRequest request) {
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
 }
