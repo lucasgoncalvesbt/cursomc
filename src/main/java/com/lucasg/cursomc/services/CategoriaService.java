@@ -13,9 +13,13 @@ public class CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     public Categoria buscar(Integer id) {
-        Categoria categoria = categoriaRepository.findById(id)
+        return categoriaRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
-        return categoria;
+    }
+
+    public Categoria criar(Categoria categoria) {
+        categoria.setId(null);
+        return categoriaRepository.save(categoria);
     }
 
 }
