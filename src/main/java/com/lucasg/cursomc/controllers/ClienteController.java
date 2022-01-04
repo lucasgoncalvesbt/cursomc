@@ -16,9 +16,9 @@ public class ClienteController {
     private final com.lucasg.cursomc.services.ClienteService ClienteService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> listar(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 
-        Cliente cliente = ClienteService.buscar(id);
+        Cliente cliente = ClienteService.find(id);
 
         return ResponseEntity.ok(cliente);
     }

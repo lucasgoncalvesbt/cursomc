@@ -12,13 +12,18 @@ public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
-    public Categoria buscar(Integer id) {
+    public Categoria find(Integer id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
     }
 
-    public Categoria criar(Categoria categoria) {
+    public Categoria create(Categoria categoria) {
         categoria.setId(null);
+        return categoriaRepository.save(categoria);
+    }
+
+    public Categoria update(Categoria categoria) {
+        find(categoria.getId());
         return categoriaRepository.save(categoria);
     }
 

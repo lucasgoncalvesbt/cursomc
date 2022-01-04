@@ -12,10 +12,9 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
 
-    public Pedido buscar(Integer id) {
-        Pedido pedido = pedidoRepository.findById(id)
+    public Pedido find(Integer id) {
+        return pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
-        return pedido;
     }
 
 }

@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClienteService {
 
-    private final ClienteRepository ClienteRepository;
+    private final ClienteRepository clienteRepository;
 
-    public Cliente buscar(Integer id) {
-        Cliente cliente = ClienteRepository.findById(id)
+    public Cliente find(Integer id) {
+        return clienteRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
-        return cliente;
     }
 
 }
