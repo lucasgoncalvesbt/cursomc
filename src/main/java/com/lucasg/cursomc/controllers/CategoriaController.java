@@ -1,6 +1,7 @@
 package com.lucasg.cursomc.controllers;
 
 import com.lucasg.cursomc.domain.Categoria;
+import com.lucasg.cursomc.dto.CategoriaDTO;
 import com.lucasg.cursomc.services.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categorias")
@@ -44,5 +47,12 @@ public class CategoriaController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+        List<Categoria> categorias = categoriaService.findAll();
+        List<CategoriaDTO> categoriasDTO = categorias.stream().map(CategoriaDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(categoriasDTO);
     }
 }
