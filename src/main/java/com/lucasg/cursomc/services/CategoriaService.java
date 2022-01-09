@@ -1,6 +1,7 @@
 package com.lucasg.cursomc.services;
 
 import com.lucasg.cursomc.domain.Categoria;
+import com.lucasg.cursomc.domain.Cliente;
 import com.lucasg.cursomc.dto.CategoriaDTO;
 import com.lucasg.cursomc.repositories.CategoriaRepository;
 import com.lucasg.cursomc.services.exceptions.DataIntegrityExeception;
@@ -31,8 +32,9 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria categoria) {
-        find(categoria.getId());
-        return categoriaRepository.save(categoria);
+        Categoria categoriaToUpdate = find(categoria.getId());
+        updateData(categoriaToUpdate, categoria);
+        return categoriaRepository.save(categoriaToUpdate);
     }
 
     public void delete(Integer id) {
@@ -56,5 +58,9 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO categoriaDTO) {
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    private void updateData(Categoria categoriaToUpdate, Categoria categoria) {
+        categoriaToUpdate.setNome(categoria.getNome());
     }
 }
