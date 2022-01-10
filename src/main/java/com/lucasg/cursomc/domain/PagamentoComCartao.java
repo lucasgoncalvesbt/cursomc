@@ -1,5 +1,6 @@
 package com.lucasg.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.lucasg.cursomc.domain.enums.EstadoPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
     private Integer numeroDeParcelas;
 
