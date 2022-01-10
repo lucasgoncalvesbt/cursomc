@@ -2,12 +2,15 @@ package com.lucasg.cursomc.controllers;
 
 import com.lucasg.cursomc.domain.Cliente;
 import com.lucasg.cursomc.dto.ClienteDTO;
+import com.lucasg.cursomc.dto.ClienteNewDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +29,18 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Void> create(@Valid @RequestBody ClienteDTO clienteDTO) {
-//        Cliente cliente1 = clienteService.create(clienteService.fromDTO(clienteDTO));
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}").buildAndExpand(cliente1.getId()).toUri();
-//
-//        return ResponseEntity.created(uri).build();
-//    }
+    @PostMapping
+    public ResponseEntity<Void> create(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
+        Cliente cliente = clienteService.create(clienteService.fromDTO(clienteNewDTO));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(cliente.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO DTO, @PathVariable Integer id) {
-        Cliente cliente = clienteService.fromDTO(DTO);
+    public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id) {
+        Cliente cliente = clienteService.fromDTO(clienteDTO);
         cliente.setId(id);
         clienteService.update(cliente);
         return ResponseEntity.noContent().build();
