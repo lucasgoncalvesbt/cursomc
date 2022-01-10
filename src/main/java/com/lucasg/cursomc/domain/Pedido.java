@@ -49,6 +49,10 @@ public class Pedido {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public double getValorTotal() {
+        return this.itemsPedidos.stream().mapToDouble(ItemPedido::getSubTotal).sum();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
