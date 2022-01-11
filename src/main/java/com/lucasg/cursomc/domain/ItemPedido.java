@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @NoArgsConstructor
 @Getter
@@ -64,5 +66,20 @@ public class ItemPedido {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getProduto().getNome());
+        sb.append(", Qtd: ");
+        sb.append(this.getQuantidade());
+        sb.append(", Preço unitário: ");
+        sb.append(nf.format(this.getPreco()));
+        sb.append(", Subtotal: ");
+        sb.append(nf.format(this.getSubTotal()));
+        sb.append("\n");
+        return sb.toString();
     }
 }

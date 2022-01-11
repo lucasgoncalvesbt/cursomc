@@ -9,6 +9,7 @@ import com.lucasg.cursomc.repositories.PagamentoRepository;
 import com.lucasg.cursomc.repositories.PedidoRepository;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final ClienteService clienteService;
     private final BoletoService boletoService;
     private final ProdutoService produtoService;
 
@@ -33,6 +35,7 @@ public class PedidoService {
     public Pedido create(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
+        pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
         pedido.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -43,10 +46,13 @@ public class PedidoService {
         pagamentoRepository.save(pedido.getPagamento());
         for (ItemPedido ip : pedido.getItemsPedidos()) {
             ip.setDesconto(0.0);
-            ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
+            ip.setProduto(produtoService.find(ip.getProduto().getId()));
+            ip.setPreco(ip.getProduto().getPreco());
             ip.setPedido(pedido);
+
         }
         itemPedidoRepository.saveAll(pedido.getItemsPedidos());
+        System.out.println(pedido);
         return pedido;
     }
 
