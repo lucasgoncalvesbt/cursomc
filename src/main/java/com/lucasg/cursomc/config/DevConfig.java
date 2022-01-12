@@ -1,6 +1,9 @@
 package com.lucasg.cursomc.config;
 
 import com.lucasg.cursomc.services.DBService;
+import com.lucasg.cursomc.services.EmailService;
+import com.lucasg.cursomc.services.MockEmailService;
+import com.lucasg.cursomc.services.SmtpEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,5 +29,10 @@ public class DevConfig {
         }
         dbService.instantiateTestDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
     }
 }
