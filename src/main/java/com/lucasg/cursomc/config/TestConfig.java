@@ -1,6 +1,8 @@
 package com.lucasg.cursomc.config;
 
 import com.lucasg.cursomc.services.DBService;
+import com.lucasg.cursomc.services.EmailService;
+import com.lucasg.cursomc.services.MockEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +21,10 @@ public class TestConfig {
     public Boolean instantiateDatabase() throws ParseException {
         dbService.instantiateTestDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }

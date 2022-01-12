@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: test
+
+default:
+  sender: lucasgoncalves.nave@gmail.com
+  recipient: lucasgoncalves.nave@gmail.com
+
