@@ -5,6 +5,7 @@ import com.lucasg.cursomc.domain.enums.EstadoPagamento;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import com.lucasg.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DBService {
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CategoriaRepository categoriaRepository;
     private final ProdutoRepository produtoRepository;
     private final CidadeRepository cidadeRepository;
@@ -83,7 +85,7 @@ public class DBService {
         estadoRepository.saveAll(List.of(est1, est2));
         cidadeRepository.saveAll(List.of(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "lucasgoncalves.jobs@gmail.com", "12345678978", TipoCliente.PESSOA_FISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "lucasgoncalves.jobs@gmail.com", "12345678978", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123456"));
 
         cli1.getTelefones().addAll(List.of("27363323", "93838393"));
 
