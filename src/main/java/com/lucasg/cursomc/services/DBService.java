@@ -2,6 +2,7 @@ package com.lucasg.cursomc.services;
 
 import com.lucasg.cursomc.domain.*;
 import com.lucasg.cursomc.domain.enums.EstadoPagamento;
+import com.lucasg.cursomc.domain.enums.Perfil;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import com.lucasg.cursomc.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -85,17 +86,23 @@ public class DBService {
         estadoRepository.saveAll(List.of(est1, est2));
         cidadeRepository.saveAll(List.of(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "lucasgoncalves.jobs@gmail.com", "12345678978", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123456"));
-
+        Cliente cli1 = new Cliente(null, "Maria Silva", "lucasgoncalves.nave@gmail.com", "12345678978", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123456"));
         cli1.getTelefones().addAll(List.of("27363323", "93838393"));
+
+        Cliente cli2 = new Cliente(null, "Lucas G", "lucasgoncalves.jobs@gmail.com", "50733476090", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123456"));
+        cli1.getTelefones().addAll(List.of("25543567", "89721630"));
+        cli2.addPerfil(Perfil.ADMIN);
+
 
         Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
         Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+        Endereco e3 = new Endereco(null, "Avenida Floriano", "2016", null, "Centro", "22753842", cli2, c2);
 
         cli1.getEnderecos().addAll(List.of(e1, e2));
+        cli2.getEnderecos().addAll(List.of(e3));
 
-        clienteRepository.saveAll(List.of(cli1));
-        enderecoRepository.saveAll(List.of(e1, e2));
+        clienteRepository.saveAll(List.of(cli1, cli2));
+        enderecoRepository.saveAll(List.of(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
