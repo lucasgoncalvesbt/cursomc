@@ -20,8 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -31,6 +33,7 @@ public class ClienteService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
+    private final S3Service s3Service;
 
     public Cliente find(Integer id) {
         UserSS user = UserService.authenticated();
@@ -73,6 +76,10 @@ public class ClienteService {
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return clienteRepository.findAll(pageRequest);
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 
     public Cliente fromDTO(ClienteDTO clienteDTO) {

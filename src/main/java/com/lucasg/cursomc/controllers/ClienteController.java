@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -73,6 +74,14 @@ public class ClienteController {
         Page<Cliente> clientes = clienteService.findPage(page, linesPerPage, orderBy, direction);
         Page<ClienteDTO> clientesDTO = clientes.map(ClienteDTO::new);
         return ResponseEntity.ok(clientesDTO);
+    }
+
+    @PostMapping("/picture")
+    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile multipartFile) {
+
+        URI uri =  clienteService.uploadProfilePicture(multipartFile);
+        return ResponseEntity.created(uri).build();
+
     }
 
 }
