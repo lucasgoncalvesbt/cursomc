@@ -6,3 +6,6 @@ default:
   sender: lucasgoncalves.nave@gmail.com
   recipient: lucasgoncalves.nave@gmail.com
 
+jwt:
+  secret: 69259b4a7c4a72d38a3b7150be4b9a5e
+  expiration: 60000
