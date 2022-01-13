@@ -3,11 +3,14 @@ package com.lucasg.cursomc.services;
 import com.lucasg.cursomc.domain.Cidade;
 import com.lucasg.cursomc.domain.Cliente;
 import com.lucasg.cursomc.domain.Endereco;
+import com.lucasg.cursomc.domain.enums.Perfil;
 import com.lucasg.cursomc.domain.enums.TipoCliente;
 import com.lucasg.cursomc.dto.ClienteDTO;
 import com.lucasg.cursomc.dto.ClienteNewDTO;
 import com.lucasg.cursomc.repositories.ClienteRepository;
 import com.lucasg.cursomc.repositories.EnderecoRepository;
+import com.lucasg.cursomc.security.UserSS;
+import com.lucasg.cursomc.services.exceptions.AuthorizationException;
 import com.lucasg.cursomc.services.exceptions.DataIntegrityExeception;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,11 @@ public class ClienteService {
     private final EnderecoRepository enderecoRepository;
 
     public Cliente find(Integer id) {
+        UserSS user = UserService.authenticated();
+        if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }

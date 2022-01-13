@@ -23,7 +23,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -57,16 +57,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
-        http.cors()
-                .and().authorizeRequests()
+        http.cors().and().csrf().disable();
+        http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-//                .antMatchers(HttpMethod.POST, "/categorias/**").hasRole("ADMIN")
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest().authenticated()
-                .and().addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService))
-                .csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .anyRequest().authenticated();
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 
