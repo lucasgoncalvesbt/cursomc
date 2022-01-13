@@ -1,5 +1,6 @@
 package com.lucasg.cursomc.services;
 
+import com.lucasg.cursomc.domain.Cliente;
 import com.lucasg.cursomc.domain.ItemPedido;
 import com.lucasg.cursomc.domain.PagamentoComBoleto;
 import com.lucasg.cursomc.domain.Pedido;
@@ -7,9 +8,14 @@ import com.lucasg.cursomc.domain.enums.EstadoPagamento;
 import com.lucasg.cursomc.repositories.ItemPedidoRepository;
 import com.lucasg.cursomc.repositories.PagamentoRepository;
 import com.lucasg.cursomc.repositories.PedidoRepository;
+import com.lucasg.cursomc.security.UserSS;
+import com.lucasg.cursomc.services.exceptions.AuthorizationException;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +63,13 @@ public class PedidoService {
         return pedido;
     }
 
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente =  clienteService.find(user.getId());
+        return pedidoRepository.findByCliente(cliente, pageRequest);
+    }
 }
