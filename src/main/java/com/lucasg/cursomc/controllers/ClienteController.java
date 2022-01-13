@@ -6,6 +6,7 @@ import com.lucasg.cursomc.dto.ClienteNewDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,12 +47,14 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> findAll() {
         List<Cliente> clientes = clienteService.findAll();
@@ -59,6 +62,7 @@ public class ClienteController {
         return ResponseEntity.ok(clientesDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/page")
     public ResponseEntity<Page<ClienteDTO>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,

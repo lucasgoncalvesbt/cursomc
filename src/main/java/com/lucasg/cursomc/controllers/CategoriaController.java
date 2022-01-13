@@ -6,6 +6,7 @@ import com.lucasg.cursomc.services.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,6 +30,7 @@ public class CategoriaController {
         return ResponseEntity.ok(categoria);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody CategoriaDTO categoriaDTO) {
         Categoria categoria1 = categoriaService.create(categoriaService.fromDTO(categoriaDTO));
@@ -38,6 +40,7 @@ public class CategoriaController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO DTO, @PathVariable Integer id) {
         Categoria categoria = categoriaService.fromDTO(DTO);
@@ -46,6 +49,7 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
