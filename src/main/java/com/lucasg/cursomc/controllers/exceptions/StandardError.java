@@ -13,8 +13,10 @@ import java.io.Serializable;
 @Setter
 public class StandardError implements Serializable {
 
-    private Integer status;
-    private String message;
     private Long timeStamp;
+    private Integer status;
+    private String error;
+    private String message;
+    private String path;
 
 }
