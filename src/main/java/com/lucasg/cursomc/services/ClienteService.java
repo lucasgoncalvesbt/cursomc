@@ -46,12 +46,26 @@ public class ClienteService {
 
     public Cliente find(Integer id) {
         UserSS user = UserService.authenticated();
-        if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
             throw new AuthorizationException("Acesso negado");
         }
 
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundExeception("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    public Cliente findByEmail(String email) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso Negado");
+        }
+
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if(cliente == null) {
+            throw new ObjectNotFoundExeception("Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+        }
+
+        return cliente;
     }
 
     @Transactional
@@ -90,7 +104,7 @@ public class ClienteService {
     public URI uploadProfilePicture(MultipartFile multipartFile) {
 
         UserSS user = UserService.authenticated();
-        if(user == null) {
+        if (user == null) {
             throw new AuthorizationException("Acesso negado");
         }
 

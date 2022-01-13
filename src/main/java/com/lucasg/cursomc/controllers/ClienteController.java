@@ -31,6 +31,14 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<Cliente> find(@RequestParam(value = "value") String email) {
+
+        Cliente cliente = clienteService.findByEmail(email);
+
+        return ResponseEntity.ok(cliente);
+    }
+
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
         Cliente cliente = clienteService.create(clienteService.fromDTO(clienteNewDTO));
