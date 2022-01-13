@@ -46,6 +46,8 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
+    private String imageUrl;
+
     public Cliente() {
         addPerfil(Perfil.CLIENTE);
     }
@@ -153,5 +155,13 @@ public class Cliente {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
