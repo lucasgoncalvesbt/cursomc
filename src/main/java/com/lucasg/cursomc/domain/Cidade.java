@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity(name = "cidades")
+@Entity
 public class Cidade {
 
     @Id
