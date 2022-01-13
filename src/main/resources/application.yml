@@ -19,6 +19,8 @@ s3:
   region: sa-east-1
 
 img:
+  profile:
+    size: 200
   prefix:
     client:
       profile: cp
