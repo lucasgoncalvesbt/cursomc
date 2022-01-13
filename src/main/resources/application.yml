@@ -8,4 +8,12 @@ default:
 
 jwt:
   secret: 69259b4a7c4a72d38a3b7150be4b9a5e
-  expiration: 60000
+  expiration: 86400000
+
+aws:
+  access_key_id:
+  secret_access_key:
+
+s3:
+  bucket: curso-spring-mcc
+  region: sa-east-1
