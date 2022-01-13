@@ -14,6 +14,7 @@ import com.lucasg.cursomc.services.exceptions.AuthorizationException;
 import com.lucasg.cursomc.services.exceptions.DataIntegrityExeception;
 import com.lucasg.cursomc.services.exceptions.ObjectNotFoundExeception;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
@@ -30,10 +32,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteService {
 
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ClienteRepository clienteRepository;
     private final EnderecoRepository enderecoRepository;
     private final S3Service s3Service;
+    private final ImageService imageService;
 
     public Cliente find(Integer id) {
         UserSS user = UserService.authenticated();
@@ -84,12 +90,11 @@ public class ClienteService {
         if(user == null) {
             throw new AuthorizationException("Acesso negado");
         }
-        URI uri = s3Service.uploadFile(multipartFile);
-        Cliente cliente = clienteRepository.findByEmail(user.getUsername());
-        cliente.setImageUrl(uri.toString());
-        clienteRepository.save(cliente);
 
-        return uri;
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+
     }
 
     public Cliente fromDTO(ClienteDTO clienteDTO) {
